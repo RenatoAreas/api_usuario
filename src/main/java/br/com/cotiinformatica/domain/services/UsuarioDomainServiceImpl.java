@@ -15,27 +15,28 @@ import br.com.cotiinformatica.infrastructure.repositories.UsuarioRepository;
 public class UsuarioDomainServiceImpl implements UsuarioDomainService {
 
 	@Autowired
-	UsuarioRepository usuarioRepository;
-	
+	private UsuarioRepository usuarioRepository;
+
 	@Autowired
-	MD5Component md5Component;
+	private MD5Component md5Component;
 
 	@Override
 	public void criarConta(Usuario usuario) {
 
 		Optional<Usuario> optional = usuarioRepository.findByEmail(usuario.getEmail());
 		if (optional.isPresent()) {
-
-			throw new IllegalArgumentException("Email já cadastrado");
+			throw new IllegalArgumentException("O email informado já está cadastrado.");
 		}
-		
+
 		usuario.setSenha(md5Component.encrypt(usuario.getSenha()));
-		
+
 		usuario.setDataHoraCriacao(Instant.now());
 		usuario.setDataHoraUltimaAlteracao(Instant.now());
-		
-		usuarioRepository.save(usuario);
 
+		usuarioRepository.save(usuario);
 	}
 
 }
+
+
+

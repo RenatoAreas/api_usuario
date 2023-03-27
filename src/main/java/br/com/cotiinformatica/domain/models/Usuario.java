@@ -6,10 +6,20 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-@Document(collation = "usuarios")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Document(collection = "usuarios")
 public class Usuario {
 
 	@Id
@@ -25,5 +35,4 @@ public class Usuario {
 	private Instant dataHoraCriacao;
 
 	private Instant dataHoraUltimaAlteracao;
-
 }

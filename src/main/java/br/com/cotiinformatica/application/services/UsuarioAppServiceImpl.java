@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.cotiinformatica.application.dtos.AutenticarDTO;
+import br.com.cotiinformatica.application.dtos.AutenticarResponseDTO;
 import br.com.cotiinformatica.application.dtos.CriarContaDTO;
 import br.com.cotiinformatica.application.dtos.CriarContaResponseDTO;
 import br.com.cotiinformatica.application.dtos.EmailMessageDTO;
+import br.com.cotiinformatica.application.dtos.RecuperarSenhaDTO;
+import br.com.cotiinformatica.application.dtos.RecuperarSenhaResponseDTO;
 import br.com.cotiinformatica.application.interfaces.UsuarioAppService;
 import br.com.cotiinformatica.domain.interfaces.UsuarioDomainService;
 import br.com.cotiinformatica.domain.models.Usuario;
@@ -51,6 +55,24 @@ public class UsuarioAppServiceImpl implements UsuarioAppService {
 		}
 
 		return response;
+	}
+
+	@Override
+	public AutenticarResponseDTO autenticar(AutenticarDTO dto) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		Usuario usuario = usuarioDomainService.autenticar(dto.getEmail(), dto.getSenha());
+		
+		AutenticarResponseDTO response = modelMapper.map(usuario, AutenticarResponseDTO.class);
+		response.setMensagem("Usuário autenticado com sucesso");
+		
+		return response;
+	}
+
+	@Override
+	public RecuperarSenhaResponseDTO recuperarSenha(RecuperarSenhaDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

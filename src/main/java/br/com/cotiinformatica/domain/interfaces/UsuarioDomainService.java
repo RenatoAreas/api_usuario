@@ -6,4 +6,8 @@ public interface UsuarioDomainService {
 
 	void criarConta(Usuario usuario);
 	
+	Usuario autenticar(String email, String senha);
+	
+	Usuario recuperarSenha(String email);
+	
 }

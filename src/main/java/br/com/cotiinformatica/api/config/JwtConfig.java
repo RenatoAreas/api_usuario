@@ -16,7 +16,6 @@ public class JwtConfig {
 		filter.setFilter(new JwtAuthenticationFilter());
 		
 		filter.addUrlPatterns("/api/usuarios/atualizar-dados");
-		
 		return filter;
 	}
 

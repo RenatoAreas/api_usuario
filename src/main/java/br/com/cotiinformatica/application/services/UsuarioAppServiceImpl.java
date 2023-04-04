@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.cotiinformatica.application.dtos.AtualizarDadosDTO;
+import br.com.cotiinformatica.application.dtos.AtualizarDadosResponseDTO;
 import br.com.cotiinformatica.application.dtos.AutenticarDTO;
 import br.com.cotiinformatica.application.dtos.AutenticarResponseDTO;
 import br.com.cotiinformatica.application.dtos.CriarContaDTO;
@@ -71,8 +73,41 @@ public class UsuarioAppServiceImpl implements UsuarioAppService {
 
 	@Override
 	public RecuperarSenhaResponseDTO recuperarSenha(RecuperarSenhaDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
+
+		ModelMapper modelMapper = new ModelMapper();
+		Usuario usuario = usuarioDomainService.recuperarSenha(dto.getEmail());
+		
+		RecuperarSenhaResponseDTO response = modelMapper.map(usuario, RecuperarSenhaResponseDTO.class);
+		response.setMessage("Recuperação de senha realizada com sucesso!");	
+		
+
+		EmailMessageDTO emailMessageDTO = new EmailMessageDTO();
+		emailMessageDTO.setTo(usuario.getEmail());
+		emailMessageDTO.setSubject("Recuperação de senha realizada com sucesso!");
+		emailMessageDTO.setBody("Olá,"+ usuario.getNome() + "Acesse o sistema com a senha: "+usuario.getNovaSenha()+"<br/>Att,</br> API Usuários");
+
+		try {
+			// serializando a mensagem e enviando para a fila
+			messageProducer.send(objectMapper.writeValueAsString(emailMessageDTO));
+		} catch (JsonProcessingException ex) {
+			ex.printStackTrace();
+		}
+				
+		return response;
+	}
+
+	@Override
+	public AtualizarDadosResponseDTO atualizarDados(AtualizarDadosDTO dto) {
+		
+		ModelMapper modelMapper = new ModelMapper();
+		Usuario usuario = modelMapper.map(dto, Usuario.class);
+		
+		Usuario usuarioAuteUsuario = usuarioDomainService.atualizarDados(usuario);
+		
+		AtualizarDadosResponseDTO response = modelMapper.map(usuarioAuteUsuario, AtualizarDadosResponseDTO.class);
+		response.setMensagem("Usuário atualizado com sucesso.");
+		
+		return response;
 	}
 
 }

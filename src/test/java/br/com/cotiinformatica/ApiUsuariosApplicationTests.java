@@ -96,16 +96,10 @@ class ApiUsuariosApplicationTests {
 	@Order(4)
 	public void recuperarSenhaTest() throws Exception {
 		RecuperarSenhaDTO dto = new RecuperarSenhaDTO();
-		Faker faker = new Faker();
 
 		dto.setEmail(email);
 
-		mock.perform(post("/api/usuarios/recuperar-senha")
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(dto)))
-				.andExpect(status()
-				.isOk());
+		mock.perform(post("/api/usuarios/recuperar-senha").contentType("application/json")
+				.content(objectMapper.writeValueAsString(dto))).andExpect(status().isOk());
 	}
-	}
-
-
+}
